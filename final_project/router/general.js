@@ -24,17 +24,33 @@ public_users.post("/register", (req, res) => {
 });
 
 // Get the book list available in the shop
-public_users.get("/", function (req, res) {
-  new Promise((resolve, reject) => {
-    res.send(JSON.stringify(books, null, 4));
-  })
-    .then((successMessage) => {
-      res.send(successMessage);
-    })
-    .catch((error) => {
-      res.send(error);
-    });
+const getAllBooks = async () => {
+  try {
+    const allBooksPromise = await Promise.resolve(books);
+    if (allBooksPromise) {
+      return allBooksPromise;
+    } else {
+      return Promise.reject(new Error("No books found."));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+public_users.get("/", async function (req, res) {
+  const data = await getAllBooks();
+  res.json(data);
 });
+// public_users.get("/", function (req, res) {
+//   new Promise((resolve, reject) => {
+//     res.send(JSON.stringify(books, null, 4));
+//   })
+//     .then((successMessage) => {
+//       res.send(successMessage);
+//     })
+//     .catch((error) => {
+//       res.send(error);
+//     });
+// });
 
 // Get book details based on ISBN
 // public_users.get("/isbn/:isbn", function (req, res) {
