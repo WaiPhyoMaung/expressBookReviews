@@ -24,21 +24,8 @@ public_users.post("/register", (req, res) => {
 });
 
 // Get the book list available in the shop
-const getAllBooks = async () => {
-  try {
-    const allBooksPromise = await Promise.resolve(books);
-    if (allBooksPromise) {
-      return allBooksPromise;
-    } else {
-      return Promise.reject(new Error("No books found."));
-    }
-  } catch (err) {
-    console.log(err);
-  }
-};
-public_users.get("/", async function (req, res) {
-  const data = await getAllBooks();
-  res.json(data);
+public_users.get("/", async (req, res) => {
+  res.send(await books);
 });
 // public_users.get("/", function (req, res) {
 //   new Promise((resolve, reject) => {
