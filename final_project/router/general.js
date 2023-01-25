@@ -9,16 +9,14 @@ public_users.post("/register", (req, res) => {
   const password = req.body.password;
   if (username && password) {
     let userswithsamename = users.filter((user) => user.username === username);
-    if (userswithsamename.length) {
+    if (userswithsamename.length > 0) {
       return res.status(404).json({ message: "User already exists!" });
     } else {
-      users.push({
-        username: req.query.username,
-        password: req.query.password,
+      users.push({ username: username, password: password });
+
+      return res.status(200).json({
+        message: "User successfully registred. Now you can login",
       });
-      return res
-        .status(200)
-        .json({ message: "User successfully registred. Now you can login" });
       // res.send("The user" + " " + req.query.firstName + " Has been added!");
     }
   }
